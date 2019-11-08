@@ -24,12 +24,8 @@ const ArtistDisplay = () => {
   }, [offset, artistName]);
 
   useEffect(() => {
-    if(offset + 5 >= count) {
-      setNextButton(true);
-    }
-    if(offset === 0) {
-      setPrevButton(true);
-    }
+    if(offset + 5 >= count) setNextButton(true);
+    if(offset === 0) setPrevButton(true);
   }, [offset]);
 
   const handleSubmit = (event) => {
