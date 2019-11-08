@@ -36,17 +36,17 @@ export default class ReleaseDisplay extends Component {
       };
     }, () => {
 
-      if (this.state.offset + 6 >= this.state.count) {
+      if(this.state.offset + 6 >= this.state.count) {
         this.setState({ nextButton: true });
       }
-      if (target.name === 'prev' && this.state.offset === 0) {
+      if(target.name === 'prev' && this.state.offset === 0) {
         this.setState({ prevButton: true });
       }
     });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.offset !== this.state.offset) {
+    if(prevState.offset !== this.state.offset) {
       this.getReleases();
     }
   }

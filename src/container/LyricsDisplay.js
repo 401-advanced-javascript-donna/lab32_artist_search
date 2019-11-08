@@ -13,14 +13,15 @@ export default class LyricsDisplay extends Component {
     }).isRequired
   }
 
-  componentDidMount() {
-    fetchLyrics(this.props.match.params.name, this.props.match.params.track)
-      .then(res => {
-        this.setState({ lyrics: res });
-      });
-  }
   state = {
     lyrics: ''
+  }
+
+  componentDidMount() {
+    fetchLyrics(this.props.match.params.name, this.props.match.params.track)
+      .then(res => {  
+        this.setState({ lyrics: res });
+      });
   }
 
   render() {
