@@ -1,58 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Artists from '../components/Artists';
 import Form from '../components/Form';
-import { fetchArtist } from '../services/api-call';
 import styles from './ArtistDisplay.css';
+import { useArtists } from '../hooks/useArtists';
+import { usePaging } from '../hooks/usePaging';
 
-const ArtistDisplay = () => {
+
+export default function ArtistDisplay() {
   const [search, setSearch] = useState('');
-  const [artistName, setArtistName] = useState('');
-  const [listOfArtists, setListOfArtists] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [count, setCount] = useState(0);
-  const [nextButton, setNextButton] = useState(false);
-  const [prevButton, setPrevButton] = useState(true);
-
-
-  useEffect(() => {
-    if(!search) return;
-    fetchArtist(search, offset)
-      .then(artists => {
-        setListOfArtists(artists[1]);
-        setCount(artists[0]);
-      });
-  }, [offset, artistName]);
-
-  useEffect(() => {
-    if(offset + 5 >= count) setNextButton(true);
-    if(offset === 0) setPrevButton(true);
-  }, [offset]);
+  const [input, setInput] = useState('');
+  const { 
+    offset, 
+    nextButton, 
+    prevButton, 
+    increment, 
+    decrement, 
+    setMax
+  } = usePaging(5);
+  const listOfArtists = useArtists(search, offset, setMax);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setOffset(0);
-    setPrevButton(true);
-    setNextButton(false);
-    setArtistName(search);
+    setSearch(input);
   };
-
 
   const handleChange = ({ target }) => {
-    setSearch(target.value);
-
+    setInput(target.value);
   };
-
-
-  const handleClick = ({ target }) => {
-    let num;
-    target.name === 'next' ? num = 5 : num = -5;
-
-    setOffset(offset + num);
-    setPrevButton(false);
-    setNextButton(false);
-
-  };
-
 
   return (
     <div className={styles.ArtistDisplay}>
@@ -60,14 +34,13 @@ const ArtistDisplay = () => {
       <Form
         handleSubmit={handleSubmit}
         handleChange={handleChange}
-        search={search}
+        search={input}
       />
       <Artists
         artistArray={listOfArtists} />
-      <button name="prev" disabled={prevButton} onClick={handleClick}>Previous</button>
-      <button name="next" disabled={nextButton} onClick={handleClick}>Next</button>
+      <button name="prev" disabled={prevButton} onClick={decrement}>Previous</button>
+      <button name="next" disabled={nextButton} onClick={increment}>Next</button>
     </div>
   );
-};
 
-export default ArtistDisplay;
+}
