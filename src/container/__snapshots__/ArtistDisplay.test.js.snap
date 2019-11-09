@@ -23,7 +23,7 @@ exports[`ArtistDisplay component renders ArtistDisplay 1`] = `
     Previous
   </button>
   <button
-    disabled={false}
+    disabled={true}
     name="next"
     onClick={[Function]}
   >
